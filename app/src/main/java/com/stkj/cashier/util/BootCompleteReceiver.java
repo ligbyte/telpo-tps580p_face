@@ -1,5 +1,6 @@
 package com.stkj.cashier.util;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,6 +20,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class BootCompleteReceiver extends BroadcastReceiver {
 
+    @SuppressLint("CheckResult")
     @Override
     public void onReceive(Context context, Intent intent) {
 //        if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){

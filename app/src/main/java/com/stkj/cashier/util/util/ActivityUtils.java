@@ -36,6 +36,14 @@ import androidx.fragment.app.Fragment;
  */
 public final class ActivityUtils {
 
+    public static boolean isActivityFinished(Context context) {
+        if (context instanceof Activity) {
+            Activity activity = (Activity) context;
+            return activity.isFinishing() || activity.isDestroyed();
+        }
+        return true;
+    }
+
     private ActivityUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }

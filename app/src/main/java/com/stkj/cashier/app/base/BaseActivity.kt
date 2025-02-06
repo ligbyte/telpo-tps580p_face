@@ -1,5 +1,6 @@
 package com.stkj.cashier.app.base
 
+import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
@@ -29,6 +30,8 @@ import com.stkj.cashier.App
 import com.stkj.cashier.R
 import com.stkj.cashier.app.home.HomeActivity
 import com.stkj.cashier.app.main.MainActivity
+import com.stkj.cashier.cbgfacepass.common.ActivityHolderHelper
+import com.stkj.cashier.cbgfacepass.common.ActivityWeakRefHolder
 import com.stkj.cashier.constants.Constants
 import es.dmoral.toasty.Toasty
 
@@ -36,6 +39,8 @@ import es.dmoral.toasty.Toasty
  * @author <a href="mailto:jenly1314@gmail.com">Jenly</a>
  */
 abstract class BaseActivity<VM : BaseViewModel<out BaseModel>,VDB : ViewDataBinding> : BaseActivity<VM,VDB>(){
+
+    var activityHolderHelper: ActivityHolderHelper = ActivityHolderHelper()
 
     fun getApp() = application as App
 
@@ -69,6 +74,11 @@ abstract class BaseActivity<VM : BaseViewModel<out BaseModel>,VDB : ViewDataBind
         BarUtils.setNavBarVisibility(this, true)
     }
     //-----------------------------------
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activityHolderHelper.clear();
+    }
 
     fun showToast(@StringRes resId: Int){
         Toasty.normal(context,resId).show()
@@ -106,6 +116,7 @@ abstract class BaseActivity<VM : BaseViewModel<out BaseModel>,VDB : ViewDataBind
 
     //-----------------------------------
 
+    @SuppressLint("ClickableViewAccessibility")
     fun setClickRightClearListener(tv: TextView) {
         tv.setOnTouchListener { v: View?, event: MotionEvent ->
             when (event.action) {
@@ -125,6 +136,7 @@ abstract class BaseActivity<VM : BaseViewModel<out BaseModel>,VDB : ViewDataBind
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     fun setClickRightEyeListener(et: EditText) {
         et.setOnTouchListener { v: View?, event: MotionEvent ->
             when (event.action) {
@@ -159,7 +171,7 @@ abstract class BaseActivity<VM : BaseViewModel<out BaseModel>,VDB : ViewDataBind
     //-----------------------------------
 
     fun startActivity(clazz: Class<*>,username: String? = null){
-        var intent = newIntent(clazz)
+        val intent = newIntent(clazz)
         intent.putExtra(Constants.KEY_USERNAME,username)
         startActivity(intent)
     }
@@ -178,9 +190,9 @@ abstract class BaseActivity<VM : BaseViewModel<out BaseModel>,VDB : ViewDataBind
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
         val options: ActivityOptions = ActivityOptions.makeBasic()
 
-        var mDisplayManager = getSystemService(Context.DISPLAY_SERVICE) as DisplayManager;
+        val mDisplayManager = getSystemService(Context.DISPLAY_SERVICE) as DisplayManager;
         //得到显示器数组
-        var displays = mDisplayManager.displays
+        val displays = mDisplayManager.displays
 
         if (displays.size>1){
             options.setLaunchDisplayId(  displays[1].displayId)
@@ -191,7 +203,7 @@ abstract class BaseActivity<VM : BaseViewModel<out BaseModel>,VDB : ViewDataBind
         startActivity(intent,options.toBundle())
     }
     fun startWebActivity(url: String,title: String? = null){
-        var intent = Intent(context, WebActivity::class.java)
+        val intent = Intent(context, WebActivity::class.java)
         title?.let {
             intent.putExtra(Constants.KEY_TITLE,it)
         }
@@ -206,6 +218,14 @@ abstract class BaseActivity<VM : BaseViewModel<out BaseModel>,VDB : ViewDataBind
         if(v.id == R.id.ivLeft){
             finish()
         }
+    }
+
+    fun <T : ActivityWeakRefHolder?> getWeakRefHolder(tClass: Class<T>?): T? {
+        return activityHolderHelper.get(tClass!!, this)
+    }
+
+    fun <T : ActivityWeakRefHolder?> clearWeakRefHolder(tClass: Class<T>?) {
+        activityHolderHelper.clear(tClass!!)
     }
 
     // 定义一个回调接口

@@ -1061,11 +1061,11 @@ class MainActivity : BaseActivity<MainViewModel, MainActivityBinding>(), View.On
             LogUtils.w("lime============ totalFaceCount: " + totalFaceCount)
 
 
-            LogUtils.w(
-                "lime============  sdk Face Count face_pass_1: " + App?.mFacePassHandler?.getLocalDyGroupFaceNum(
-                    "face_pass_1"
-                )
-            )
+//            LogUtils.w(
+//                "lime============  sdk Face Count face_pass_1: " + App?.mFacePassHandler?.getLocalDyGroupFaceNum(
+//                    "face_pass_1"
+//                )
+//            )
 
 
             //   companyMember()

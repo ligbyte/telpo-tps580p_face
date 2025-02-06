@@ -24,6 +24,7 @@ import com.stkj.cashier.bean.CurrentTimeInfoBean
 import com.stkj.cashier.bean.IntervalCardTypeBean
 import com.stkj.cashier.BuildConfig
 import com.stkj.cashier.app.base.helper.SystemEventHelper
+import com.stkj.cashier.cbgfacepass.net.retrofit.RetrofitManager
 import com.stkj.cashier.constants.Constants
 import com.stkj.cashier.glide.GlideAppHelper
 import com.stkj.cashier.util.camera.FacePassCameraType
@@ -46,6 +47,7 @@ class App : Application() {
     var isVip = false
     var isAI = false
     companion object instance {
+        @JvmStatic
         var serialNumber: String = ""
         var BASE_URL: String = ""
         lateinit var TTS: TextToSpeech//tts语速
@@ -83,6 +85,7 @@ class App : Application() {
         } else {
             BASE_URL = Constants.BASE_TEST_URL
         }
+        RetrofitManager.INSTANCE.setDefaultBaseUrl(BASE_URL)
 //        BASE_URL = SPUtils.getInstance().getString(Constants.FACE_ADDRESS,"")
 //        LogUtils.e("reStartApp",App.BASE_URL)
         initTTS()

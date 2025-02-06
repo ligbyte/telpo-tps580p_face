@@ -158,7 +158,7 @@ greendao {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation(name: 'FacePassAndroidProSDK-year-release', ext: 'aar')
+    implementation(name: 'FacePassAndroidSDK-year-release', ext: 'aar')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
 //    implementation "androidx.core:core-ktx:$versions.coreKtx"
@@ -285,6 +285,12 @@ dependencies {
     implementation 'com.github.jenly1314:viewfinderview:1.2.0'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.1'
+
+    //rx生命周期解绑库
+    implementation "com.uber.autodispose2:autodispose:2.1.1"
+    implementation "com.uber.autodispose2:autodispose-android:2.1.1"
+    implementation "com.uber.autodispose2:autodispose-androidx-lifecycle:2.1.1"
 
 
 }

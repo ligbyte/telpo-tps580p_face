@@ -305,79 +305,79 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
             while (!isInterrupt) {
 
                 /* 将每一帧FacePassImage 送入SDK算法， 并得到返回结果 */
-                var detectionResult: FacePassTrackResult? = null
-                try {
-                    if (App.cameraType == FacePassCameraType.FACEPASS_DUALCAM) {
-                        var framePair: Pair<CameraPreviewData, CameraPreviewData> = try {
-                            ComplexFrameHelper.takeComplexFrame()
-                        } catch (e: InterruptedException) {
-                            e.printStackTrace()
-                            continue
-                        }
-                        val imageRGB = FacePassImage(
-                            framePair.first.nv21Data,
-                            framePair.first.width,
-                            framePair.first.height,
-                            cameraRotation,
-                            FacePassImageType.NV21
-                        )
-                        val imageIR = FacePassImage(
-                            framePair.second.nv21Data,
-                            framePair.second.width,
-                            framePair.second.height,
-                            cameraRotation,
-                            FacePassImageType.NV21
-                        )
-                        detectionResult = App.mFacePassHandler?.feedFrameRGBIR(imageRGB, imageIR)
-                    } else {
-                        var cameraPreviewData: CameraPreviewData? = null
-                        try {
-                            cameraPreviewData = mFeedFrameQueue.take()
-                            val imageRGB = FacePassImage(
-                                cameraPreviewData.nv21Data,
-                                cameraPreviewData.width,
-                                cameraPreviewData.height,
-                                cameraRotation,
-                                FacePassImageType.NV21
-                            )
-                            detectionResult = App.mFacePassHandler?.feedFrame(imageRGB)
-                            //LogUtils.e("识别到人脸1 "+detectionResult?.message)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            // LogUtils.e("识别到人脸2 "+e.message)
-                            continue
-                        }
-
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    LogUtils.d("识别到人脸3 " + e.message)
-                }
-
-                /*离线模式，将识别到人脸的，message不为空的result添加到处理队列中*/
-                if (detectionResult != null && detectionResult.message.isNotEmpty()) {
-                    LogUtils.d("识别到人脸" + detectionResult.images.size)
-                    /*所有检测到的人脸框的属性信息*/
-
-                    /*送识别的人脸框的属性信息*/
-                    val trackOpts = arrayOfNulls<FacePassTrackOptions>(detectionResult.images.size)
-                    for (i in detectionResult.images.indices) {
-                        if (detectionResult.images[i].rcAttr.respiratorType != FacePassRCAttribute.FacePassRespiratorType.NO_RESPIRATOR) {
-                            val searchThreshold = 75f
-                            val livenessThreshold = 80f // -1.0f will not change the liveness threshold
-                            trackOpts[i] = FacePassTrackOptions(
-                                detectionResult.images[i].trackId,
-                                searchThreshold,
-                                livenessThreshold
-                            )
-                        } else {
-                            trackOpts[i] =
-                                FacePassTrackOptions(detectionResult.images[i].trackId, -1f, -1f)
-                        }
-                    }
-                    val mRecData = RecognizeData(detectionResult.message, trackOpts)
-                    mRecognizeDataQueue.offer(mRecData)
-                }
+//                var detectionResult: FacePassTrackResult? = null
+//                try {
+//                    if (App.cameraType == FacePassCameraType.FACEPASS_DUALCAM) {
+//                        var framePair: Pair<CameraPreviewData, CameraPreviewData> = try {
+//                            ComplexFrameHelper.takeComplexFrame()
+//                        } catch (e: InterruptedException) {
+//                            e.printStackTrace()
+//                            continue
+//                        }
+//                        val imageRGB = FacePassImage(
+//                            framePair.first.nv21Data,
+//                            framePair.first.width,
+//                            framePair.first.height,
+//                            cameraRotation,
+//                            FacePassImageType.NV21
+//                        )
+//                        val imageIR = FacePassImage(
+//                            framePair.second.nv21Data,
+//                            framePair.second.width,
+//                            framePair.second.height,
+//                            cameraRotation,
+//                            FacePassImageType.NV21
+//                        )
+//                        detectionResult = App.mFacePassHandler?.feedFrameRGBIR(imageRGB, imageIR)
+//                    } else {
+//                        var cameraPreviewData: CameraPreviewData? = null
+//                        try {
+//                            cameraPreviewData = mFeedFrameQueue.take()
+//                            val imageRGB = FacePassImage(
+//                                cameraPreviewData.nv21Data,
+//                                cameraPreviewData.width,
+//                                cameraPreviewData.height,
+//                                cameraRotation,
+//                                FacePassImageType.NV21
+//                            )
+//                            detectionResult = App.mFacePassHandler?.feedFrame(imageRGB)
+//                            //LogUtils.e("识别到人脸1 "+detectionResult?.message)
+//                        } catch (e: Exception) {
+//                            e.printStackTrace()
+//                            // LogUtils.e("识别到人脸2 "+e.message)
+//                            continue
+//                        }
+//
+//                    }
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                    LogUtils.d("识别到人脸3 " + e.message)
+//                }
+//
+//                /*离线模式，将识别到人脸的，message不为空的result添加到处理队列中*/
+//                if (detectionResult != null && detectionResult.message.isNotEmpty()) {
+//                    LogUtils.d("识别到人脸" + detectionResult.images.size)
+//                    /*所有检测到的人脸框的属性信息*/
+//
+//                    /*送识别的人脸框的属性信息*/
+//                    val trackOpts = arrayOfNulls<FacePassTrackOptions>(detectionResult.images.size)
+//                    for (i in detectionResult.images.indices) {
+//                        if (detectionResult.images[i].rcAttr.respiratorType != FacePassRCAttribute.FacePassRespiratorType.NO_RESPIRATOR) {
+//                            val searchThreshold = 75f
+//                            val livenessThreshold = 80f // -1.0f will not change the liveness threshold
+//                            trackOpts[i] = FacePassTrackOptions(
+//                                detectionResult.images[i].trackId,
+//                                searchThreshold,
+//                                livenessThreshold
+//                            )
+//                        } else {
+//                            trackOpts[i] =
+//                                FacePassTrackOptions(detectionResult.images[i].trackId, -1f, -1f)
+//                        }
+//                    }
+//                    val mRecData = RecognizeData(detectionResult.message, trackOpts)
+//                    mRecognizeDataQueue.offer(mRecData)
+//                }
 
             }
         }
@@ -396,151 +396,151 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
         override fun run() {
             while (!isInterrupt) {
 
-                try {
-                    Log.d("DEBUG_TAG", "RecognizeData >>>>1")
-                    val recognizeData: RecognizeData = mRecognizeDataQueue.take()
-                    var recognizeResult: Array<FacePassRecognitionResult>? = null
-                    if (isStartFaceScan.get()) {
-                        Log.d("DEBUG_TAG", "RecognizeData >>>>2")
-
-                        recognizeResult = App.mFacePassHandler?.recognize(
-                            Constants.GROUP_NAME,
-                            recognizeData.message,
-                            1,
-                            recognizeData.trackOpt[0].trackId,
-                            FacePassRecogMode.FP_REG_MODE_DEFAULT,
-                            recognizeData.trackOpt[0].livenessThreshold,
-                            recognizeData.trackOpt[0].searchThreshold
-                        )
-                        //                        FacePassRecognitionResult[][] recognizeResultArray = mFacePassHandler.recognize(group_name, recognizeData.message, 1, recognizeData.trackOpt);
-//                        if (recognizeResultArray != null && recognizeResultArray.length > 0) {
-//                            for (FacePassRecognitionResult[] recognizeResult : recognizeResultArray) {
-//                                if (recognizeResult != null && recognizeResult.length > 0) {
-                        Log.d("DEBUG_TAG", "RecognizeData >>>>" + recognizeResult?.size)
-                        if (recognizeResult != null && recognizeResult.isNotEmpty()) {
-                            for (result in recognizeResult) {
-                                //判断人脸相似程度 >75表示成功 否侧失败处理
-                                if (result.detail != null && result.detail.searchScore < 75) {
-                                    runOnUiThread {
-                                        handleFacePassFailRetryDelay()
-                                    }
-                                    break
-                                }
-                                val faceToken = String(result.faceToken, charset("ISO-8859-1"))
-                                LogUtils.e(
-                                    "recognizeResult识别出来的人脸",
-                                    faceToken + "/" + result.recognitionState
-                                )
-                                var faceTokens: Array<ByteArray>? = null
-                                if (App.mFacePassHandler != null) {
-                                    faceTokens =
-                                        App.mFacePassHandler!!.getLocalGroupInfo(Constants.GROUP_NAME)
-                                }
-                                val faceTokenList: MutableList<kotlin.String> =
-                                    java.util.ArrayList()
-                                if (faceTokens?.isNotEmpty() == true) {
-                                    for (j in faceTokens?.indices!!) {
-                                        if (faceTokens[j].isNotEmpty()) {
-                                            faceTokenList.add(kotlin.text.String(faceTokens[j]))
-                                        }
-                                    }
-                                }
-                                LogUtils.e("底库的人脸", "数量" + faceTokenList.size)
-                               // CompanyMemberBiz.getCompanyMember2()
-
-                                if (faceToken.isNotEmpty() && FacePassRecognitionState.RECOGNITION_PASS == result.recognitionState) {
-                                    EventBus.getDefault().post(
-                                        MessageEventBean(
-                                            MessageEventType.MainResume
-                                        )
-                                    )
-                                    //金额模式
-                                    isStartFaceScan.set(false)
-                                    companyMember =
-                                        CompanyMemberBiz.getCompanyMember(faceToken)
-                                    if (companyMember != null) {
-                                        clearFacePassQueueCache()
-                                        resetFacePassRetryDelay()
-                                        ttsSpeak("识别成功")
-                                        runOnUiThread {
-                                            tvFaceTips2.visibility = View.VISIBLE
-                                            tvFaceTips2.text = "识别成功"
-                                            if (companyMember != null) {
-                                                showSuccessFace(companyMember!!.imgData)
-                                            }
-                                        }
-
-                                        EventBus.getDefault().post(
-                                            MessageEventBean(
-                                                MessageEventType.AmountToken,
-                                                faceToken
-                                            )
-                                        )
-                                    } else {
-
-                                        try {
-                                            val b = mFacePassHandler!!.deleteFace(
-                                                faceToken.toByteArray(StandardCharsets.ISO_8859_1)
-                                            )
-                                            //重新识别
-                                            App.mFacePassHandler?.reset()
-                                            LogUtils.e("人脸匹配失败,删除地库人脸token成功" + faceToken + "==" + b)
-                                        } catch (e: Exception) {
-                                            e.printStackTrace()
-                                            LogUtils.e("人脸匹配失败,删除地库人脸token失败" + faceToken + e.message)
-                                        }
-                                    }
-                                } else if (FacePassRecognitionState.RECOGNITION_PASS != result.recognitionState) {
-                                    //  ttsSpeak("本地暂无人脸信息")
-                                    runOnUiThread {
-                                        handleFacePassFailRetryDelay()
-                                    }
-                                }
-//                                var resultGson =
-//                                    FacePassRecognitionResultToGson(
-//                                        result.trackId,
-//                                        faceToken,
-//                                        result.detail!!,
-//                                        String(result.featureData),
-//                                        result.recognitionState,
-//                                        result.searchErrorCode,
-//                                        result.livenessErrorCode,
-//                                        result.smallSearchErrorCode
+//                try {
+//                    Log.d("DEBUG_TAG", "RecognizeData >>>>1")
+//                    val recognizeData: RecognizeData = mRecognizeDataQueue.take()
+//                    var recognizeResult: Array<FacePassRecognitionResult>? = null
+//                    if (isStartFaceScan.get()) {
+//                        Log.d("DEBUG_TAG", "RecognizeData >>>>2")
+//
+//                        recognizeResult = App.mFacePassHandler?.recognize(
+//                            Constants.GROUP_NAME,
+//                            recognizeData.message,
+//                            1,
+//                            recognizeData.trackOpt[0].trackId,
+//                            FacePassRecogMode.FP_REG_MODE_DEFAULT,
+//                            recognizeData.trackOpt[0].livenessThreshold,
+//                            recognizeData.trackOpt[0].searchThreshold
+//                        )
+//                        //                        FacePassRecognitionResult[][] recognizeResultArray = mFacePassHandler.recognize(group_name, recognizeData.message, 1, recognizeData.trackOpt);
+////                        if (recognizeResultArray != null && recognizeResultArray.length > 0) {
+////                            for (FacePassRecognitionResult[] recognizeResult : recognizeResultArray) {
+////                                if (recognizeResult != null && recognizeResult.length > 0) {
+//                        Log.d("DEBUG_TAG", "RecognizeData >>>>" + recognizeResult?.size)
+//                        if (recognizeResult != null && recognizeResult.isNotEmpty()) {
+//                            for (result in recognizeResult) {
+//                                //判断人脸相似程度 >75表示成功 否侧失败处理
+//                                if (result.detail != null && result.detail.searchScore < 75) {
+//                                    runOnUiThread {
+//                                        handleFacePassFailRetryDelay()
+//                                    }
+//                                    break
+//                                }
+//                                val faceToken = String(result.faceToken, charset("ISO-8859-1"))
+//                                LogUtils.e(
+//                                    "recognizeResult识别出来的人脸",
+//                                    faceToken + "/" + result.recognitionState
+//                                )
+//                                var faceTokens: Array<ByteArray>? = null
+//                                if (App.mFacePassHandler != null) {
+//                                    faceTokens =
+//                                        App.mFacePassHandler!!.getLocalGroupInfo(Constants.GROUP_NAME)
+//                                }
+//                                val faceTokenList: MutableList<kotlin.String> =
+//                                    java.util.ArrayList()
+//                                if (faceTokens?.isNotEmpty() == true) {
+//                                    for (j in faceTokens?.indices!!) {
+//                                        if (faceTokens[j].isNotEmpty()) {
+//                                            faceTokenList.add(kotlin.text.String(faceTokens[j]))
+//                                        }
+//                                    }
+//                                }
+//                                LogUtils.e("底库的人脸", "数量" + faceTokenList.size)
+//                               // CompanyMemberBiz.getCompanyMember2()
+//
+//                                if (faceToken.isNotEmpty() && FacePassRecognitionState.RECOGNITION_PASS == result.recognitionState) {
+//                                    EventBus.getDefault().post(
+//                                        MessageEventBean(
+//                                            MessageEventType.MainResume
+//                                        )
 //                                    )
-//                            val idx: Int = findidx(ageGenderResult, result.trackId)
-//                                LogUtils.e("recognize ", Gson().toJson(resultGson))
-//                            if (idx == -1) {
-//                                showRecognizeResult(
-//                                    result.trackId,
-//                                    result.detail.searchScore,
-//                                    result.detail.livenessScore,
-//                                    !TextUtils.isEmpty(faceToken)
-//                                )
-//                            } else {
-//                                showRecognizeResult(
-//                                    result.trackId,
-//                                    result.detail.searchScore,
-//                                    result.detail.livenessScore,
-//                                    !TextUtils.isEmpty(faceToken),
-//                                    ageGenderResult!![idx].age,
-//                                    ageGenderResult[idx].gender
-//                                )
+//                                    //金额模式
+//                                    isStartFaceScan.set(false)
+//                                    companyMember =
+//                                        CompanyMemberBiz.getCompanyMember(faceToken)
+//                                    if (companyMember != null) {
+//                                        clearFacePassQueueCache()
+//                                        resetFacePassRetryDelay()
+//                                        ttsSpeak("识别成功")
+//                                        runOnUiThread {
+//                                            tvFaceTips2.visibility = View.VISIBLE
+//                                            tvFaceTips2.text = "识别成功"
+//                                            if (companyMember != null) {
+//                                                showSuccessFace(companyMember!!.imgData)
+//                                            }
+//                                        }
+//
+//                                        EventBus.getDefault().post(
+//                                            MessageEventBean(
+//                                                MessageEventType.AmountToken,
+//                                                faceToken
+//                                            )
+//                                        )
+//                                    } else {
+//
+//                                        try {
+//                                            val b = mFacePassHandler!!.deleteFace(
+//                                                faceToken.toByteArray(StandardCharsets.ISO_8859_1)
+//                                            )
+//                                            //重新识别
+//                                            App.mFacePassHandler?.reset()
+//                                            LogUtils.e("人脸匹配失败,删除地库人脸token成功" + faceToken + "==" + b)
+//                                        } catch (e: Exception) {
+//                                            e.printStackTrace()
+//                                            LogUtils.e("人脸匹配失败,删除地库人脸token失败" + faceToken + e.message)
+//                                        }
+//                                    }
+//                                } else if (FacePassRecognitionState.RECOGNITION_PASS != result.recognitionState) {
+//                                    //  ttsSpeak("本地暂无人脸信息")
+//                                    runOnUiThread {
+//                                        handleFacePassFailRetryDelay()
+//                                    }
+//                                }
+////                                var resultGson =
+////                                    FacePassRecognitionResultToGson(
+////                                        result.trackId,
+////                                        faceToken,
+////                                        result.detail!!,
+////                                        String(result.featureData),
+////                                        result.recognitionState,
+////                                        result.searchErrorCode,
+////                                        result.livenessErrorCode,
+////                                        result.smallSearchErrorCode
+////                                    )
+////                            val idx: Int = findidx(ageGenderResult, result.trackId)
+////                                LogUtils.e("recognize ", Gson().toJson(resultGson))
+////                            if (idx == -1) {
+////                                showRecognizeResult(
+////                                    result.trackId,
+////                                    result.detail.searchScore,
+////                                    result.detail.livenessScore,
+////                                    !TextUtils.isEmpty(faceToken)
+////                                )
+////                            } else {
+////                                showRecognizeResult(
+////                                    result.trackId,
+////                                    result.detail.searchScore,
+////                                    result.detail.livenessScore,
+////                                    !TextUtils.isEmpty(faceToken),
+////                                    ageGenderResult!![idx].age,
+////                                    ageGenderResult[idx].gender
+////                                )
+////                            }
 //                            }
-                            }
-                        }
-//                        else{
-//                            ttsSpeak("本地暂无人脸信息")
 //                        }
-                        //                                }
-//                            }
-//                        }
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    LogUtils.e("recognize-Exception", e.message)
-                } catch (e: FacePassException) {
-                    e.printStackTrace()
-                }
+////                        else{
+////                            ttsSpeak("本地暂无人脸信息")
+////                        }
+//                        //                                }
+////                            }
+////                        }
+//                    }
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                    LogUtils.e("recognize-Exception", e.message)
+//                } catch (e: FacePassException) {
+//                    e.printStackTrace()
+//                }
             }
         }
 
