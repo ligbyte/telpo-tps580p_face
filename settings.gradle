@@ -1,0 +1,2 @@
+rootProject.name='telpo-tps580p_face'
+include ':app'
