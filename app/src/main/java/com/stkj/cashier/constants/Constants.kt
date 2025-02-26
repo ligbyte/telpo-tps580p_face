@@ -13,7 +13,7 @@ object Constants {
     // TODO 接口地址
     const val BASE_TEST_URL = "http://101.43.252.67:9003/"
     //const val BASE_OFFICIAL_URL = "http://101.42.54.44:9003"
-    const val BASE_OFFICIAL_URL = "http://101.43.252.67:9003/"
+    const val BASE_OFFICIAL_URL = "http://101.43.252.67:9003"
     // TODO Bugly 申请的 AppId
     const val BUGLY_APP_ID = "5e7c47b81a"
 

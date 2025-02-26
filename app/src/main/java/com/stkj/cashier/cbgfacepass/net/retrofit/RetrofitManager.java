@@ -87,4 +87,7 @@ public enum RetrofitManager {
         return objectMapper;
     }
 
+    public String getDefaultBaseUrl() {
+        return defaultBaseUrl;
+    }
 }

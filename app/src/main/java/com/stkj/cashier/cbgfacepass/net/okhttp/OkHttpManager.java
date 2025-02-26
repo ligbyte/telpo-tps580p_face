@@ -1,6 +1,8 @@
 package com.stkj.cashier.cbgfacepass.net.okhttp;
 
 
+import android.util.Log;
+
 import com.stkj.cashier.cbgfacepass.net.custom.LogInterceptorWrapper;
 
 import java.util.concurrent.TimeUnit;
@@ -8,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.internal.tls.OkHostnameVerifier;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 
 /**
@@ -22,7 +25,7 @@ public enum OkHttpManager {
     private OkHttpClient mDefHttpClient;
     private OkHttpClient mCacheHttpClient;
     private Interceptor mDefIntercept;
-    private boolean httpLogEnable;
+    private boolean httpLogEnable = true;
     private boolean logSwitch;
 
     /**
@@ -59,7 +62,16 @@ public enum OkHttpManager {
             }
             //log
             if (httpLogEnable) {
-                httpClientBuilder.addInterceptor(new LogInterceptorWrapper());
+                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                    @Override
+                    public void log(String message) {
+                        //打印retrofit日志
+                        Log.d("RetrofitLog","limeRetrofitLog = "+message);
+                    }
+                });
+                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+                httpClientBuilder.addInterceptor(loggingInterceptor);
             }
             httpClientBuilder.connectTimeout(MAX_TIME_OUT, TimeUnit.SECONDS)
                     .readTimeout(MAX_TIME_OUT, TimeUnit.SECONDS)

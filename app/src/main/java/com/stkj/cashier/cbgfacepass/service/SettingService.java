@@ -17,7 +17,7 @@ public interface SettingService {
     /**
      * 设备录入人员回调(同步)
      */
-    @GET("home/v3/index")
+    @GET("home/v2/index")
     Call<BaseNetResponse<String>> syncFacePassCallback(@QueryMap Map<String, String> requestParams);
 
 
