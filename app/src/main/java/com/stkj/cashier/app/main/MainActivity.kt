@@ -742,6 +742,7 @@ class MainActivity : BaseActivity<MainViewModel, MainActivityBinding>(), View.On
 
         //系统事件监听
         SystemEventHelper.INSTANCE.addSystemEventListener(systemEventListener)
+            initFaceRecognition()
     } catch (e: Throwable) {
         e.printStackTrace()
     }
@@ -1081,7 +1082,7 @@ class MainActivity : BaseActivity<MainViewModel, MainActivityBinding>(), View.On
 
     }
 
-    private fun initApp() {
+    private fun initFaceRecognition() {
         // 初始化人脸识别
         val facePassHelper = getWeakRefHolder(CBGFacePassHandlerHelper::class.java)
         facePassHelper?.setOnInitFacePassListener(object : CBGFacePassHandlerHelper.OnInitFacePassListener {

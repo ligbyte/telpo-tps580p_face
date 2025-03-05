@@ -475,6 +475,7 @@ public class FacePassHelper extends ActivityWeakRefHolder {
                             Log.i(TAG,"limeFacePassHelper 476 ");
                             if (facePassItemInfo.getCard_state() == 64) {
                                 Log.d(TAG,"limeaddFacePassToLocal 478 " +  GsonUtils.toJson(facePassItemInfo));
+                                Log.d(TAG,"lime-facePassItemInfo 478 " +  GsonUtils.toJson(facePassItemInfo));
                                Log.d(TAG,"lime-facePassHelper -handleFacePassInfo--cardNumber: " + cardNumber + " Card_state() == 64");
                                 //移除本地人脸item 信息
                                 FacePassPeopleInfoDao facePassPeopleInfoDao = daoSession.getFacePassPeopleInfoDao();
@@ -482,8 +483,9 @@ public class FacePassHelper extends ActivityWeakRefHolder {
                                         facePassPeopleInfoDao.queryBuilder()
                                                 .where(FacePassPeopleInfoDao.Properties.Unique_number.eq(facePassItemInfo.getUnique_number()))
                                                 .unique();
-                                Log.d(TAG,"limeaddFacePassToLocal --start-- " + 486);
+                                Log.d(TAG,"limeaddFacePassToLocal-Unique_number " + facePassItemInfo.getUnique_number() + "       " + 486);
                                 if (localPeopleInfo != null) {
+                                    Log.i(TAG,"limeaddFacePassToLocal --start-- " + 487);
                                    Log.d(TAG,"lime-facePassHelper -handleFacePassInfo--cardNumber: " + cardNumber + " Card_state() == 64 delete local face");
                                     //删除移除本地人脸状态为64
                                     facePassPeopleInfoDao.delete(localPeopleInfo);
@@ -518,7 +520,7 @@ public class FacePassHelper extends ActivityWeakRefHolder {
                                 return Observable.just(facePassInfoWrapper);
                             }
                             Log.d(TAG,"limeaddFacePassToLocal --start-- " + 519);
-                            Log.d(TAG,"addFacePassToLocal519 --start-- " + 519);
+                            Log.d(TAG,"addFacePassToLocal519 --start-- " + GsonUtils.toJson(facePassItemInfo));
                             //加入本地人脸
                             CBGFacePassHandlerHelper cbgFacePassHandHelper = (CBGFacePassHandlerHelper) ActivityHolderFactory.get(CBGFacePassHandlerHelper.class, activityWithCheck);
                             //绑定本地人脸数据库成功
@@ -532,6 +534,7 @@ public class FacePassHelper extends ActivityWeakRefHolder {
                                Log.d(TAG,"lime-facePassHelper -handleFacePassInfo--cardNumber: " + cardNumber + " imageData: " + imageData);
                                 Bitmap bitmap = null;
                                 try {
+                                    Log.d(TAG,"limeaddFacePassToLocal ========================================= " + 537);
                                     FutureTarget<Bitmap> futureTarget = GlideApp.with(App.instance.getApplicationContext())
                                             .asBitmap()
                                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
@@ -543,6 +546,7 @@ public class FacePassHelper extends ActivityWeakRefHolder {
                                     e.printStackTrace();
                                 }
                                 Log.d(TAG,"limeaddFacePassToLocal --start-- " + 546);
+                                // TODO:验证人脸质量
                                 FacePassAddFaceResult addFaceResult = cbgFacePassHandHelper.addFace(bitmap);
                                 if (addFaceResult != null) {
                                     Log.d(TAG,"limeaddFacePassToLocal --start-- " + 549);
