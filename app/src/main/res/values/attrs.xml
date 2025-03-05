@@ -16,6 +16,11 @@
         <attr name="line_bottom_margin" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="FacePassCameraLayout">
+        <attr name="facePreview" format="boolean" />
+        <attr name="fpcl_consume_lay_res" format="integer" />
+    </declare-styleable>
+
     <declare-styleable name="ShapeLayoutHelper">
         <attr name="radiusT" format="dimension" />
         <attr name="circleRadiusT" format="dimension" />

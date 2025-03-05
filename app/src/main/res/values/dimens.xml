@@ -76,6 +76,7 @@
     <dimen name="size_130dp">130dp</dimen>
     <dimen name="size_140dp">140dp</dimen>
     <dimen name="size_150dp">150dp</dimen>
+    <dimen name="dp_150">150dp</dimen>
     <dimen name="sp_11">11sp</dimen>
     <dimen name="sp_10">10sp</dimen>
     <dimen name="dp_18">18dp</dimen>
@@ -93,4 +94,7 @@
     <dimen name="dp_80">80dp</dimen>
     <dimen name="dp_30">30dp</dimen>
     <dimen name="dp_12">12dp</dimen>
+    <dimen name="dp_86">86dp</dimen>
+    <dimen name="dp_7">7dp</dimen>
+    <dimen name="sp_6">6sp</dimen>
 </resources>

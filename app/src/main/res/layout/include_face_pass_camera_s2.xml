@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/dp_86"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.stkj.cashier.common.ui.widget.ratiolayout.RatioFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ratio_w_h="1">
+
+        <!-- 红外识别IR -->
+        <com.stkj.cashier.common.ui.widget.surfaceview.AutoFitSurfaceView
+            android:id="@+id/ir_preview_face"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- 默认摄像头 -->
+        <com.stkj.cashier.common.ui.widget.surfaceview.AutoFitSurfaceView
+            android:id="@+id/preview_face"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.king.view.viewfinderview.ViewfinderView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:vvFrameColor="@color/color_0087FA"
+            app:vvFrameRatio="1"
+            app:vvLabelTextLocation="bottom"
+            app:vvLaserStyle="grid" />
+
+        <ImageView
+            android:id="@+id/iv_default_face"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/icon_consumer_camera"
+            android:padding="@dimen/dp_4"
+            android:src="@mipmap/icon_welcome_consumer" />
+
+    </com.stkj.cashier.common.ui.widget.ratiolayout.RatioFrameLayout>
+
+    <TextView
+        android:id="@+id/tv_face_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_7"
+        android:text="欢迎光临！"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_6" />
+
+</LinearLayout>
