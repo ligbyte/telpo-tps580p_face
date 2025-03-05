@@ -1117,6 +1117,8 @@ class MainActivity : BaseActivity<MainViewModel, MainActivityBinding>(), View.On
                     val facePassConfig = CBGFacePassConfigMMKV.getFacePassConfig(supportDualCamera)
                     val facePassHelper = getWeakRefHolder(CBGFacePassHandlerHelper::class.java)
                     facePassHelper?.initAndAuthSdk(facePassConfig)
+                    Log.d(TAG, "limeinitAndAuthSdk : " + 1120)
+                    Log.d(TAG, "limeinitAndAuthSdk facePassHelper: " + (facePassHelper == null))
                 }
 
                 override fun onCancel() {
