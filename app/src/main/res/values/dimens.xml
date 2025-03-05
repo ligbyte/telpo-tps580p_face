@@ -87,6 +87,7 @@
     <dimen name="dp_11">11dp</dimen>
     <dimen name="dp_180">180dp</dimen>
     <dimen name="dp_100">100dp</dimen>
+    <dimen name="dp_420">420dp</dimen>
     <dimen name="dp_0_5">0.5dp</dimen>
     <dimen name="dp_25">25dp</dimen>
     <dimen name="dp_90">90dp</dimen>

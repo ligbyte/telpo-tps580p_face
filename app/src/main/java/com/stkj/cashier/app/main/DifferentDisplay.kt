@@ -79,9 +79,9 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
 
     private var layoutManager: LinearLayoutManager? = null
     private var mAdapter: ConsumeRefundListAdapter? = null
-    private lateinit var cameraPreview: CameraPreview
-    private var ivCameraOverLayer:ImageView? = null
-    private var ivSuccessHeader:ImageView? = null
+//    private lateinit var cameraPreview: CameraPreview
+//    private var ivCameraOverLayer:ImageView? = null
+//    private var ivSuccessHeader:ImageView? = null
 
     /* 相机实例 */
     private var cameraManager: CameraManager? = null
@@ -112,16 +112,16 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
         setCancelable(false)
         setContentView(R.layout.layout_different_display_2)
 
-        ivCameraOverLayer = findViewById(R.id.iv_camera_over_layer);
-        ivSuccessHeader = findViewById(R.id.ivSuccessHeader);
-        cameraPreview = findViewById(R.id.cameraPreview)
-        cameraPreview.setAutoFitSurfaceListener { width, height ->
-            if (height > 0 && width > height) {
-                val offset = -(width - height) / 2
-                cameraPreview.translationX = offset.toFloat()
-                LogUtils.e("setAutoFitSurfaceListener---offset: $offset")
-            }
-        }
+//        ivCameraOverLayer = findViewById(R.id.iv_camera_over_layer);
+//        ivSuccessHeader = findViewById(R.id.ivSuccessHeader);
+//        cameraPreview = findViewById(R.id.cameraPreview)
+//        cameraPreview.setAutoFitSurfaceListener { width, height ->
+//            if (height > 0 && width > height) {
+//                val offset = -(width - height) / 2
+//                cameraPreview.translationX = offset.toFloat()
+//                LogUtils.e("setAutoFitSurfaceListener---offset: $offset")
+//            }
+//        }
 //        cameraPreview.setAspectRatio(600, 600)
         tvTime = findViewById<TextView>(R.id.tvTime)
         tvCompanyName = findViewById<TextView>(R.id.tvCompanyName)
@@ -159,11 +159,11 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
         if (switchFacePassPay) {
             openAndInitCamera()
             startFacePassDetect()
-            ivCameraOverLayer?.visibility = View.GONE
+//            ivCameraOverLayer?.visibility = View.GONE
         } else {
             closeAndReleaseCamera()
             stopFacePassDetect()
-            ivCameraOverLayer?.visibility = View.VISIBLE
+//            ivCameraOverLayer?.visibility = View.VISIBLE
         }
 
         //系统事件监听
@@ -181,14 +181,16 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
      */
     private fun openAndInitCamera() {
         try {
-            if (cameraManager != null) {
-                closeAndReleaseCamera()
-            }
-            cameraManager = CameraManager()
-            cameraManager!!.setPreviewDisplay(cameraPreview)
-            cameraManager!!.setListener(this)
-            cameraManager!!.open(window?.windowManager, false, 640, 360)
-            LogUtils.e("CameraManager 打开并初始化摄像头")
+//            if (cameraManager != null) {
+//                closeAndReleaseCamera()
+//            }
+//            cameraManager = CameraManager()
+//            cameraManager!!.setPreviewDisplay(cameraPreview)
+//            cameraManager!!.setListener(this)
+//            cameraManager!!.open(window?.windowManager, false, 640, 360)
+//            LogUtils.e("CameraManager 打开并初始化摄像头")
+
+
         } catch (e: Throwable) {
             e.printStackTrace()
         }
@@ -588,19 +590,19 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
     }
 
     private fun showSuccessFace(imageUrl:String){
-        if (ivSuccessHeader != null) {
-            ivSuccessHeader!!.visibility = View.VISIBLE
-            GlideApp.with(App.applicationContext)
-                .load(imageUrl)
-                .placeholder(R.mipmap.icon_camera_over_layer)
-                .into(ivSuccessHeader!!)
-        }
+//        if (ivSuccessHeader != null) {
+//            ivSuccessHeader!!.visibility = View.VISIBLE
+//            GlideApp.with(App.applicationContext)
+//                .load(imageUrl)
+//                .placeholder(R.mipmap.icon_camera_over_layer)
+//                .into(ivSuccessHeader!!)
+//        }
     }
 
     private fun hideSuccessFace() {
-        if (ivSuccessHeader != null) {
-            ivSuccessHeader!!.visibility = View.GONE
-        }
+//        if (ivSuccessHeader != null) {
+//            ivSuccessHeader!!.visibility = View.GONE
+//        }
     }
 
     private fun hideBalance() {
@@ -661,12 +663,12 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
                 //重新识别
                 App.mFacePassHandler?.reset()
                 startFacePassDetect()
-                ivCameraOverLayer?.visibility = View.GONE
+//                ivCameraOverLayer?.visibility = View.GONE
                 hideSuccessFace()
             }
             MessageEventType.CloseFacePassPay -> {
                 stopFacePassDetect()
-                ivCameraOverLayer?.visibility  = View.VISIBLE
+//                ivCameraOverLayer?.visibility  = View.VISIBLE
                 hideSuccessFace()
                 closeAndReleaseCamera()
             }

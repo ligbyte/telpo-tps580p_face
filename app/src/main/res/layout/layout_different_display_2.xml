@@ -133,43 +133,49 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <com.stkj.cashier.util.camera.CameraPreview
-                        android:id="@+id/cameraPreview"
-                        android:layout_width="match_parent"
+<!--                    <com.stkj.cashier.util.camera.CameraPreview-->
+<!--                        android:id="@+id/cameraPreview"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerInParent="true" />-->
+
+<!--                    <com.king.view.viewfinderview.ViewfinderView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        app:vvFrameColor="#00DC82"-->
+<!--                        app:vvLaserColor="#00DC82"-->
+<!--                        app:vvFrameRatio="1"-->
+<!--                        app:vvPointAnimationInterval="1000"-->
+<!--                        app:vvLabelTextLocation="bottom"-->
+<!--                        app:vvLaserStyle="grid" />-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/ivSuccessHeader"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:scaleType="centerCrop"-->
+<!--                        android:visibility="gone"/>-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:scaleType="fitXY"-->
+<!--                        android:src="@mipmap/icon_camerapreview_8" />-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/iv_camera_over_layer"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_centerInParent="true"-->
+<!--                        android:scaleType="centerCrop"-->
+<!--                        android:src="@mipmap/icon_camera_over_layer" />-->
+
+                    <!-- 人脸取景框 -->
+                    <com.stkj.cashier.ui.widget.FacePassCameraLayout
+                        android:id="@+id/fpc_face"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true" />
-
-                    <com.king.view.viewfinderview.ViewfinderView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:vvFrameColor="#00DC82"
-                        app:vvLaserColor="#00DC82"
-                        app:vvFrameRatio="1"
-                        app:vvPointAnimationInterval="1000"
-                        app:vvLabelTextLocation="bottom"
-                        app:vvLaserStyle="grid" />
-
-                    <ImageView
-                        android:id="@+id/ivSuccessHeader"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:visibility="gone"/>
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/icon_camerapreview_8" />
-
-                    <ImageView
-                        android:id="@+id/iv_camera_over_layer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        android:scaleType="centerCrop"
-                        android:src="@mipmap/icon_camera_over_layer" />
-
+                        app:fpcl_consume_lay_res="1" />
 
                 </FrameLayout>
 
