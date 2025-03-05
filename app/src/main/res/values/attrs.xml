@@ -20,7 +20,10 @@
         <attr name="facePreview" format="boolean" />
         <attr name="fpcl_consume_lay_res" format="integer" />
     </declare-styleable>
-
+    <declare-styleable name="HomeTitleLayout">
+        <attr name="isLightMode" format="boolean" />
+        <attr name="htl_consume_lay_res" format="integer" />
+    </declare-styleable>
     <declare-styleable name="ShapeLayoutHelper">
         <attr name="radiusT" format="dimension" />
         <attr name="circleRadiusT" format="dimension" />

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_33"
+    android:orientation="horizontal"
+    android:padding="@dimen/dp_7">
+
+    <!-- 超市icon -->
+    <ImageView
+        android:id="@+id/iv_super_market_icon"
+        android:layout_width="@dimen/dp_17"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/dp_3"
+        android:src="@mipmap/icon_canteen"
+        android:visibility="gone" />
+
+    <!-- 超市名称+编号 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_store_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="慧餐宝"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_5"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_store_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="@dimen/dp_1_5"
+            android:includeFontPadding="false"
+            android:text="产品序列号："
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_5" />
+    </LinearLayout>
+
+    <!-- 消费模式 -->
+    <com.stkj.cashier.app.weigh.shapelayout.ShapeTextView
+        android:id="@+id/stv_consumer_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_16"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/dp_11"
+        android:gravity="center"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:text="金额模式"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_6"
+        app:radiusT="@dimen/dp_8"
+        app:solidColorT="@color/color_0087FA" />
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <!-- 右侧系统日期等信息 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/dp_4"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_net_delay_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_5"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_7" />
+
+        <ImageView
+            android:id="@+id/iv_sys_wifi"
+            android:layout_width="@dimen/dp_10"
+            android:layout_height="@dimen/dp_10"
+            android:src="@mipmap/icon_wifi_level3" />
+
+        <TextView
+            android:id="@+id/tv_sys_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_12"
+            android:includeFontPadding="false"
+            android:text="15:00"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_12"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_sys_month_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_3"
+            android:text="12-01\n星期一"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_5" />
+
+    </LinearLayout>
+
+</LinearLayout>

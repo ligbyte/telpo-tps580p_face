@@ -7,15 +7,22 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.os.*
+import android.os.Build
+import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.util.Log
-import android.view.*
-import android.widget.*
+import android.view.Display
+import android.view.KeyEvent
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.stkj.cashier.util.util.*
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.stkj.cashier.App
@@ -23,16 +30,24 @@ import com.stkj.cashier.R
 import com.stkj.cashier.app.adapter.ConsumeRefundListAdapter
 import com.stkj.cashier.app.base.helper.CommonTipsHelper
 import com.stkj.cashier.app.base.helper.SystemEventHelper
+import com.stkj.cashier.app.main.callback.ConsumerListener
 import com.stkj.cashier.app.weigh.commontips.CommonTipsView
 import com.stkj.cashier.bean.MessageEventBean
 import com.stkj.cashier.bean.db.CompanyMemberdbEntity
 import com.stkj.cashier.config.MessageEventType
 import com.stkj.cashier.constants.Constants
-import com.stkj.cashier.glide.GlideApp
 import com.stkj.cashier.greendao.biz.CompanyMemberBiz
+import com.stkj.cashier.ui.widget.FacePassCameraLayout
 import com.stkj.cashier.util.SettingVar
-import com.stkj.cashier.util.camera.*
+import com.stkj.cashier.util.camera.CameraManager
+import com.stkj.cashier.util.camera.CameraPreviewData
+import com.stkj.cashier.util.camera.ComplexFrameHelper
+import com.stkj.cashier.util.camera.FacePassCameraType
+import com.stkj.cashier.util.camera.RecognizeData
 import com.stkj.cashier.util.rxjava.DefaultDisposeObserver
+import com.stkj.cashier.util.util.LogUtils
+import com.stkj.cashier.util.util.SPUtils
+import com.stkj.cashier.util.util.SpanUtils
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.observers.DisposableObserver
@@ -79,6 +94,8 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
 
     private var layoutManager: LinearLayoutManager? = null
     private var mAdapter: ConsumeRefundListAdapter? = null
+    private var fpcFace: FacePassCameraLayout? = null
+    private val consumerListener: ConsumerListener? = null
 //    private lateinit var cameraPreview: CameraPreview
 //    private var ivCameraOverLayer:ImageView? = null
 //    private var ivSuccessHeader:ImageView? = null
@@ -111,7 +128,7 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
         LogUtils.e("副屏onCreate")
         setCancelable(false)
         setContentView(R.layout.layout_different_display_2)
-
+            fpcFace = findViewById(R.id.fpc_face) as FacePassCameraLayout
 //        ivCameraOverLayer = findViewById(R.id.iv_camera_over_layer);
 //        ivSuccessHeader = findViewById(R.id.ivSuccessHeader);
 //        cameraPreview = findViewById(R.id.cameraPreview)
