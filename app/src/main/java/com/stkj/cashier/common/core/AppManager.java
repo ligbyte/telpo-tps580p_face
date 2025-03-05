@@ -1,4 +1,4 @@
-package com.stkj.cashier.cbgfacepass.common;
+package com.stkj.cashier.common.core;
 
 import android.app.Activity;
 import android.app.Application;

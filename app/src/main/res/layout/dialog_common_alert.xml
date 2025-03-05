@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_88000000"
+    android:clickable="true">
+
+    <com.stkj.cashier.app.weigh.shapelayout.ShapeLinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_20"
+        app:radiusT="@dimen/dp_5"
+        app:solidColorT="@color/white">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_11"
+            android:text="标题"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_alert_content"
+            android:layout_width="@dimen/dp_180"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxHeight="@dimen/dp_100"
+            android:scrollbarSize="@dimen/dp_2"
+            android:scrollbarThumbVertical="@drawable/shape_scroll_bar_style"
+            android:scrollbars="vertical"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_10"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_18"
+            android:orientation="horizontal">
+
+            <com.stkj.cashier.app.weigh.shapelayout.ShapeTextView
+                android:id="@+id/stv_left_bt"
+                android:layout_width="@dimen/dp_79"
+                android:layout_height="@dimen/dp_23"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_8"
+                app:radiusT="@dimen/dp_4"
+                app:solidColorT="@color/color_0087FA" />
+
+            <com.stkj.cashier.common.ui.widget.shapelayout.ShapeTextView
+                android:id="@+id/stv_right_bt"
+                android:layout_width="@dimen/dp_79"
+                android:layout_height="@dimen/dp_23"
+                android:layout_marginLeft="@dimen/dp_11"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="取消"
+                android:textColor="@color/color_151619"
+                android:textSize="@dimen/sp_8"
+                android:visibility="gone"
+                app:radiusT="@dimen/dp_4"
+                app:solidColorT="@color/color_F1F2F4" />
+        </LinearLayout>
+    </com.stkj.cashier.app.weigh.shapelayout.ShapeLinearLayout>
+
+</FrameLayout>

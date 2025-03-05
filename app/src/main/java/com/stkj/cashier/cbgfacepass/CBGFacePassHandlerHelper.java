@@ -12,8 +12,7 @@ import com.stkj.cashier.App;
 import com.stkj.cashier.cbgfacepass.model.CBGFacePassConfig;
 import com.stkj.cashier.cbgfacepass.model.CBGFacePassRecognizeResult;
 import com.stkj.cashier.cbgfacepass.model.RecognizeData;
-import com.stkj.cashier.cbgfacepass.common.ActivityWeakRefHolder;
-import com.stkj.cashier.cbgfacepass.common.AppManager;
+import com.stkj.cashier.common.core.ActivityWeakRefHolder;
 import com.stkj.cashier.util.util.ToastUtils;
 import com.stkj.cashier.cbgfacepass.common.StorageHelper;
 

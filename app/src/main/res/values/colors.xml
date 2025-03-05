@@ -11,35 +11,43 @@
     <color name="default_bg">#f2f3f6</color>
 
     <color name="line">#f2f3f6</color>
-
+    <color name="color_88000000">#88000000</color>
     <color name="line_divider">#f2f3f6</color>
 
     <color name="white_pressed">#10000000</color>
-
+    <color name="color_333333">#333333</color>
+    <color name="color_6f6f6f">#6f6f6f</color>
+    <color name="color_c6c6c6">#c6c6c6</color>
+    <color name="color_1E90FF">#1E90FF</color>
     <color name="white_7f">#7fffffff</color>
-
+    <color name="color_cccccc">#cccccc</color>
+    <color name="color_0091FF">#0091FF</color>
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
-
+    <color name="color_151619">#151619</color>
     <color name="text_default">#666666</color>
-
+    <color name="color_0087FA">#0087FA</color>
     <color name="text_3">#333333</color>
     <color name="text_6">#666666</color>
     <color name="text_9">#999999</color>
-
+    <color name="color_f1f1f1">#f1f1f1</color>
     <color name="tab_normal">#666666</color>
     <color name="tab_selected">#0087fa</color>
-
+    <color name="color_aeaeae">#aeaeae</color>
     <color name="text_theme">#0087fa</color>
-
+    <color name="color_FE3F53">#FE3F53</color>
     <color name="home_menu_normal">#999999</color>
     <color name="home_menu_selected">#A38D59</color>
-
+    <color name="color_F1F2F4">#F1F2F4</color>
     <color name="transparent">#00000000</color>
-
+    <color name="color_999999">#999999</color>
+    <color name="color_E8EAED">#E8EAED</color>
+    <color name="color_EBEDF0">#EBEDF0</color>
+    <color name="color_F4F7F9">#F4F7F9</color>
+    <color name="color_EDF0F5">#EDF0F5</color>
     <color name="btn_bg_normal">#0087fa</color>
     <color name="btn_bg_pressed">#0c6aad</color>
-
+    <color name="color_0085CF">#0085CF</color>
     <color name="color_0087fa">#0087FA</color>
     <color name="color_c7e3ff">#C7E3FF</color>
     <color name="color_171717">#171717</color>

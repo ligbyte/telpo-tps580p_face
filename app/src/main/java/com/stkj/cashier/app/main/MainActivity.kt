@@ -2,7 +2,6 @@ package com.stkj.cashier.app.main
 
 import android.annotation.SuppressLint
 import android.app.ActivityManager
-import android.app.AlertDialog
 import android.app.Notification
 import android.content.Context
 import android.content.Intent
@@ -26,8 +25,6 @@ import android.view.Display
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.NonNull
@@ -35,7 +32,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.util.valueIterator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.viewpager.widget.ViewPager.OnAdapterChangeListener
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.FutureTarget
 import com.king.base.util.SystemUtils
@@ -50,19 +46,24 @@ import com.stkj.cashier.bean.CompanyMemberBean
 import com.stkj.cashier.bean.MessageEventBean
 import com.stkj.cashier.bean.Result
 import com.stkj.cashier.bean.db.CompanyMemberdbEntity
+import com.stkj.cashier.cbgfacepass.CBGFacePassHandlerHelper
+import com.stkj.cashier.cbgfacepass.data.CBGFacePassConfigMMKV
+import com.stkj.cashier.cbgfacepass.permission.CBGPermissionRequest
+import com.stkj.cashier.common.permissions.callback.PermissionCallback
 import com.stkj.cashier.config.MessageEventType
 import com.stkj.cashier.constants.Constants
 import com.stkj.cashier.databinding.MainActivityBinding
+import com.stkj.cashier.deviceinterface.DeviceManager
 import com.stkj.cashier.dict.HomeMenu
 import com.stkj.cashier.glide.GlideApp
 import com.stkj.cashier.greendao.CompanyMemberdbEntityDao
 import com.stkj.cashier.greendao.biz.CompanyMemberBiz
 import com.stkj.cashier.greendao.tool.DBManager
+import com.stkj.cashier.permission.AppPermissionHelper
 import com.stkj.cashier.scan.ScanCodeCallback
 import com.stkj.cashier.scan.SupportDevices
 import com.stkj.cashier.scan.scan.ScanCallBack
 import com.stkj.cashier.scan.scan.ScanTool
-import com.stkj.cashier.util.AdbCommandExecutor
 import com.stkj.cashier.util.ByteReverser
 import com.stkj.cashier.util.ParseData
 import com.stkj.cashier.util.QueueManager
@@ -101,7 +102,6 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.nio.charset.StandardCharsets
 import java.util.Arrays
-import java.util.Objects
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -782,6 +782,7 @@ class MainActivity : BaseActivity<MainViewModel, MainActivityBinding>(), View.On
 
     }
 
+    @SuppressLint("AutoDispose")
     private fun initCheckStatus() {
         var time = SPUtils.getInstance().getInt(Constants.FACE_HEAD_BEAT, 30).toLong()
         reportDeviceStatusDisposable = Observable.interval(0, time, TimeUnit.SECONDS)
@@ -800,6 +801,7 @@ class MainActivity : BaseActivity<MainViewModel, MainActivityBinding>(), View.On
             }
     }
 
+    @SuppressLint("AutoDispose")
     private fun requestConsumptionType() {
         currentTimeDisposable?.dispose()
         currentTimeDisposable = Observable.interval(0, 60, TimeUnit.SECONDS)
@@ -839,6 +841,7 @@ class MainActivity : BaseActivity<MainViewModel, MainActivityBinding>(), View.On
         LogUtils.e("checkCurrentAmountMode end")
     }
 
+    @SuppressLint("AutoDispose")
     private fun requestNetStatus() {
         netStatusDisposable?.dispose()
         netStatusDisposable = Observable.interval(0, 10, TimeUnit.SECONDS)
@@ -1077,6 +1080,56 @@ class MainActivity : BaseActivity<MainViewModel, MainActivityBinding>(), View.On
 
 
     }
+
+    private fun initApp() {
+        // 初始化人脸识别
+        val facePassHelper = getWeakRefHolder(CBGFacePassHandlerHelper::class.java)
+        facePassHelper?.setOnInitFacePassListener(object : CBGFacePassHandlerHelper.OnInitFacePassListener {
+            override fun onInitSuccess() {
+                //initData()
+            }
+
+            override fun onInitError(msg: String) {
+                //hideLoadingDialog()
+//                CommonDialogUtils.showTipsDialog(this@MainActivity, msg, "知道了") { alertDialogFragment ->
+//                    initData()
+//                }
+
+                ToastUtils.showLong(msg)
+
+            }
+        })
+        AppPermissionHelper.with(this)
+            .requestPermission(CBGPermissionRequest(), object : PermissionCallback {
+                override fun onGranted() {
+                    showLoadingDialog()
+                    // 设备识别距离阈值
+                    val defaultFaceMinThreshold = DeviceManager.getInstance().defaultDetectFaceMinThreshold
+                    CBGFacePassConfigMMKV.setDefDetectFaceMinThreshold(defaultFaceMinThreshold)
+                    // 设备人脸入库阈值
+                    val defaultAddFaceMinThreshold = DeviceManager.getInstance().defaultAddFaceMinThreshold
+                    CBGFacePassConfigMMKV.setDefAddFaceMinThreshold(defaultAddFaceMinThreshold)
+                    // 设备人脸角度阈值
+                    val defaultPoseThreshold = DeviceManager.getInstance().defaultPoseThreshold
+                    CBGFacePassConfigMMKV.setDefPoseThreshold(defaultPoseThreshold)
+                    val supportDualCamera = DeviceManager.getInstance().isSupportDualCamera
+                    val facePassConfig = CBGFacePassConfigMMKV.getFacePassConfig(supportDualCamera)
+                    val facePassHelper = getWeakRefHolder(CBGFacePassHandlerHelper::class.java)
+                    facePassHelper?.initAndAuthSdk(facePassConfig)
+                }
+
+                override fun onCancel() {
+//                    CommonDialogUtils.showTipsDialog(this@MainActivity, "人脸识别功能请求系统权限失败", "知道了") { alertDialogFragment ->
+//                        initData()
+//                    }
+                    ToastUtils.showLong("人脸识别功能请求系统权限失败")
+
+                }
+            })
+    }
+
+
+
 
     private fun clickVersionUpdate() {
         // TODO 处理点击“版本更新”逻辑

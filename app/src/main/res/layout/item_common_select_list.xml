@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.stkj.cashier.common.ui.widget.linelayout.LineLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_30"
+    android:background="@drawable/selector_item_sale_list"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    app:line_color="@color/color_EDF0F5"
+    app:line_top="true"
+    app:line_width="@dimen/dp_0_5">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/sp_11" />
+
+    <ImageView
+        android:id="@+id/iv_select"
+        android:layout_width="@dimen/dp_12"
+        android:layout_height="@dimen/dp_12"
+        android:layout_marginRight="@dimen/dp_5"
+        android:src="@drawable/selector_check_box" />
+</com.stkj.cashier.common.ui.widget.linelayout.LineLinearLayout>

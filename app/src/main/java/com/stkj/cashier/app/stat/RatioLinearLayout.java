@@ -36,7 +36,7 @@ public class RatioLinearLayout extends LinearLayout {
 
     public void readRatioAttr(Context context, AttributeSet attributeSet) {
         TypedArray a = context.obtainStyledAttributes(attributeSet, R.styleable.RatioLinearLayout);
-        mRatioWH = a.getFloat(R.styleable.RatioLinearLayout_ratio_w_h, 1);
+        mRatioWH = a.getFloat(R.styleable.RatioLinearLayout_ratio_w_h_1, 1);
         a.recycle();
     }
 

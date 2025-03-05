@@ -1,4 +1,4 @@
-package com.stkj.cashier.cbgfacepass.common;
+package com.stkj.cashier.common.core;
 
 import android.app.Activity;
 
@@ -8,8 +8,8 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 
+
 import com.stkj.cashier.app.base.BaseActivity;
-import com.stkj.cashier.app.base.helper.MainThreadHolder;
 import com.stkj.cashier.util.util.ActivityUtils;
 
 import java.lang.ref.WeakReference;

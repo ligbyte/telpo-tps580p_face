@@ -1,5 +1,7 @@
 package com.stkj.cashier.app.base
 
+//import com.huayi.hgt.hyznjar.CustomAPI
+
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Context
@@ -18,11 +20,8 @@ import androidx.annotation.StringRes
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import com.stkj.cashier.util.util.BarUtils
-import com.stkj.cashier.util.util.LogUtils
-//import com.huayi.hgt.hyznjar.CustomAPI
+import androidx.fragment.app.Fragment
 import com.king.base.util.StringUtils
-
 import com.king.frame.mvvmframe.base.BaseActivity
 import com.king.frame.mvvmframe.base.BaseModel
 import com.king.frame.mvvmframe.base.BaseViewModel
@@ -30,9 +29,15 @@ import com.stkj.cashier.App
 import com.stkj.cashier.R
 import com.stkj.cashier.app.home.HomeActivity
 import com.stkj.cashier.app.main.MainActivity
-import com.stkj.cashier.cbgfacepass.common.ActivityHolderHelper
-import com.stkj.cashier.cbgfacepass.common.ActivityWeakRefHolder
+import com.stkj.cashier.common.core.ActivityHolderHelper
+import com.stkj.cashier.common.core.ActivityWeakRefHolder
+import com.stkj.cashier.common.core.AppLoadingDialogHelper
+import com.stkj.cashier.common.utils.ActivityUtils
+import com.stkj.cashier.common.utils.FragmentUtils
+import com.stkj.cashier.common.utils.StatusBarUtils
 import com.stkj.cashier.constants.Constants
+import com.stkj.cashier.util.util.BarUtils
+import com.stkj.cashier.util.util.LogUtils
 import es.dmoral.toasty.Toasty
 
 /**
@@ -41,6 +46,7 @@ import es.dmoral.toasty.Toasty
 abstract class BaseActivity<VM : BaseViewModel<out BaseModel>,VDB : ViewDataBinding> : BaseActivity<VM,VDB>(){
 
     var activityHolderHelper: ActivityHolderHelper = ActivityHolderHelper()
+    protected var loadingDialogHelper: AppLoadingDialogHelper = AppLoadingDialogHelper()
 
     fun getApp() = application as App
 
@@ -220,9 +226,10 @@ abstract class BaseActivity<VM : BaseViewModel<out BaseModel>,VDB : ViewDataBind
         }
     }
 
-    fun <T : ActivityWeakRefHolder?> getWeakRefHolder(tClass: Class<T>?): T? {
-        return activityHolderHelper.get(tClass!!, this)
+    fun <T : ActivityWeakRefHolder> getWeakRefHolder(tClass: Class<T>): T? {
+        return activityHolderHelper.get(tClass, this)
     }
+
 
     fun <T : ActivityWeakRefHolder?> clearWeakRefHolder(tClass: Class<T>?) {
         activityHolderHelper.clear(tClass!!)
@@ -242,5 +249,88 @@ abstract class BaseActivity<VM : BaseViewModel<out BaseModel>,VDB : ViewDataBind
     }
 
 
+    /**
+     * 获取内容占位布局id（弹窗和loading布局等）
+     */
+    fun getContentPlaceHolderId(): Int {
+        return 0
+    }
+
+
+    fun addContentPlaceHolderFragment(fragment: Fragment?) {
+        val contentPlaceHolderId: Int = getContentPlaceHolderId()
+        if (contentPlaceHolderId != 0) {
+            FragmentUtils.safeAddFragment(supportFragmentManager, fragment, contentPlaceHolderId)
+        } else {
+            //AppToast.toastMsg("添加内容失败")
+        }
+    }
+
+
+    fun showLoadingDialog() {
+        runUIThreadWithCheck(Runnable {
+            loadingDialogHelper.showLoadingDialog(
+                this@BaseActivity,
+                0,
+                ""
+            )
+        })
+    }
+
+    fun showLoadingDialog(loadingText: String?) {
+        runUIThreadWithCheck(Runnable {
+            loadingDialogHelper.showLoadingDialog(
+                this@BaseActivity,
+                0,
+                loadingText
+            )
+        })
+    }
+
+    fun showLoadingDialog(tag: Int) {
+        runUIThreadWithCheck(Runnable {
+            loadingDialogHelper.showLoadingDialog(
+                this@BaseActivity,
+                tag,
+                ""
+            )
+        })
+    }
+
+    fun showLoadingDialog(tag: Int, loadingText: String?) {
+        runUIThreadWithCheck(Runnable {
+            loadingDialogHelper.showLoadingDialog(
+                this@BaseActivity,
+                tag,
+                loadingText
+            )
+        })
+    }
+
+    fun hideLoadingDialog() {
+        runUIThreadWithCheck(Runnable { loadingDialogHelper.hideLoadingDialog(0) })
+    }
+
+    fun hideLoadingDialog(tag: Int) {
+        runUIThreadWithCheck(Runnable { loadingDialogHelper.hideLoadingDialog(tag) })
+    }
+
+    fun runUIThreadWithCheck(task: Runnable) {
+        if (!isActivityFinished()) {
+            runOnUiThread {
+                if (!isActivityFinished()) {
+                    task.run()
+                }
+            }
+        }
+    }
+
+    fun isActivityFinished(): Boolean {
+        return ActivityUtils.isActivityFinished(this)
+    }
+
+    fun setSystemBarMode(isLightMode: Boolean) {
+        StatusBarUtils.setSystemBarMode(this, isLightMode)
+    }
 
 }

@@ -2,7 +2,7 @@ package com.stkj.cashier.cbgfacepass.permission;
 
 import android.Manifest;
 
-import com.stkj.cashier.cbgfacepass.common.BasePermissionRequest;
+import com.stkj.cashier.common.permissions.base.BasePermissionRequest;
 
 
 /**

@@ -1,4 +1,4 @@
-package com.stkj.cashier.cbgfacepass.common;
+package com.stkj.cashier.common.permissions.base;
 
 import java.util.List;
 

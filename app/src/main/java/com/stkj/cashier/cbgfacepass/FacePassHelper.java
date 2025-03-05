@@ -14,6 +14,8 @@ import com.stkj.cashier.cbgfacepass.model.BaseNetResponse;
 import com.stkj.cashier.cbgfacepass.net.ParamsUtils;
 import com.stkj.cashier.cbgfacepass.net.retrofit.RetrofitManager;
 import com.stkj.cashier.cbgfacepass.service.SettingService;
+import com.stkj.cashier.common.core.ActivityHolderFactory;
+import com.stkj.cashier.common.core.ActivityWeakRefHolder;
 import com.stkj.cashier.glide.GlideApp;
 import com.stkj.cashier.greendao.AppGreenDaoOpenHelper;
 import com.stkj.cashier.greendao.GreenDBConstants;
@@ -25,9 +27,6 @@ import com.stkj.cashier.cbgfacepass.model.AddLocalFacePassInfoWrapper;
 import com.stkj.cashier.cbgfacepass.model.FacePassPeopleInfo;
 import com.stkj.cashier.cbgfacepass.model.FacePassPeopleListInfo;
 import com.stkj.cashier.cbgfacepass.model.SearchFacePassPeopleParams;
-import com.stkj.cashier.cbgfacepass.common.ActivityHolderFactory;
-import com.stkj.cashier.cbgfacepass.common.ActivityWeakRefHolder;
-import com.stkj.cashier.cbgfacepass.common.AppManager;
 
 
 import com.stkj.cashier.util.rxjava.DefaultObserver;
@@ -257,7 +256,7 @@ public class FacePassHelper extends ActivityWeakRefHolder {
                                 facePassPeopleInfoDao.delete(localPeopleInfo);
                                 String faceToken = localPeopleInfo.getCBGFaceToken();
                                 if (!TextUtils.isEmpty(faceToken)) {
-                                    CBGFacePassHandlerHelper cbgFacePassHandHelper = ActivityHolderFactory.get(CBGFacePassHandlerHelper.class, activityWithCheck);
+                                    CBGFacePassHandlerHelper cbgFacePassHandHelper = (CBGFacePassHandlerHelper) ActivityHolderFactory.get(CBGFacePassHandlerHelper.class, activityWithCheck);
                                     if (cbgFacePassHandHelper != null) {
                                         cbgFacePassHandHelper.deleteFace(faceToken.getBytes(StandardCharsets.ISO_8859_1));
                                     }
@@ -413,7 +412,7 @@ public class FacePassHelper extends ActivityWeakRefHolder {
         for (OnFacePassListener onFacePassListener : facePassListenerHashSet) {
             onFacePassListener.onLoadFacePassGroupStart();
         }
-        TreeMap<String, String> paramsMap = ParamsUtils.newSortParamsMapWithMode("CompanyMember");
+        TreeMap<String, String> paramsMap = ParamsUtils.newSortParamsMapWithMode("KeyBoardCompanyMember");
         paramsMap.put("inferior_type", String.valueOf(inferior_type));
         RetrofitManager.INSTANCE.getDefaultRetrofit()
                 .create(SettingService.class)
@@ -493,7 +492,7 @@ public class FacePassHelper extends ActivityWeakRefHolder {
                                     facePassInfoWrapper.setLocalDatabaseCount(count);
                                     String cbgFaceToken = localPeopleInfo.getCBGFaceToken();
                                     if (!TextUtils.isEmpty(cbgFaceToken)) {
-                                        CBGFacePassHandlerHelper cbgFacePassHandHelper = ActivityHolderFactory.get(CBGFacePassHandlerHelper.class, activityWithCheck);
+                                        CBGFacePassHandlerHelper cbgFacePassHandHelper = (CBGFacePassHandlerHelper) ActivityHolderFactory.get(CBGFacePassHandlerHelper.class, activityWithCheck);
                                         if (cbgFacePassHandHelper != null) {
                                             cbgFacePassHandHelper.deleteFace(cbgFaceToken.getBytes(StandardCharsets.ISO_8859_1));
                                         }
@@ -521,13 +520,14 @@ public class FacePassHelper extends ActivityWeakRefHolder {
                             Log.d(TAG,"limeaddFacePassToLocal --start-- " + 519);
                             Log.d(TAG,"addFacePassToLocal519 --start-- " + 519);
                             //加入本地人脸
-                            CBGFacePassHandlerHelper cbgFacePassHandHelper = ActivityHolderFactory.get(CBGFacePassHandlerHelper.class, activityWithCheck);
+                            CBGFacePassHandlerHelper cbgFacePassHandHelper = (CBGFacePassHandlerHelper) ActivityHolderFactory.get(CBGFacePassHandlerHelper.class, activityWithCheck);
                             //绑定本地人脸数据库成功
                             boolean bindFaceGroupSuccess = false;
 
                             int bindFaceGroupResult = -1;
+                            Log.w(TAG,"limeaddFacePassToLocal 529 " + (cbgFacePassHandHelper != null));
                             if (cbgFacePassHandHelper != null) {
-                                Log.d(TAG,"addFacePassToLocal519 --start-- " + 530);
+                                Log.d(TAG,"limeaddFacePassToLocal --start-- " + 530);
                                 String imageData = facePassItemInfo.getImgData();
                                Log.d(TAG,"lime-facePassHelper -handleFacePassInfo--cardNumber: " + cardNumber + " imageData: " + imageData);
                                 Bitmap bitmap = null;
@@ -542,9 +542,10 @@ public class FacePassHelper extends ActivityWeakRefHolder {
                                    Log.e(TAG,"lime-facePassHelper -handleFacePassInfo--cardNumber: " + cardNumber + " load imageData error " + imageData);
                                     e.printStackTrace();
                                 }
+                                Log.d(TAG,"limeaddFacePassToLocal --start-- " + 546);
                                 FacePassAddFaceResult addFaceResult = cbgFacePassHandHelper.addFace(bitmap);
                                 if (addFaceResult != null) {
-                                    Log.d(TAG,"limeaddFacePassToLocal --start-- " + 542);
+                                    Log.d(TAG,"limeaddFacePassToLocal --start-- " + 549);
                                    Log.d(TAG,"lime-facePassHelper -handleFacePassInfo--cardNumber: " + cardNumber + " addFaceResult: " + addFaceResult.result);
                                     /**
                                      * 0：成功
@@ -572,12 +573,11 @@ public class FacePassHelper extends ActivityWeakRefHolder {
                                     facePassItemInfo.setCBGCheckFaceResult(-99);
                                 }
                             }
-                            Log.d(TAG,"addFacePassToLocal519 --start-- " + 575);
+                            Log.d(TAG,"limeaddFacePassToLocal --start-- " + 577);
                             //请求facePassCallback
                             Response<BaseNetResponse<String>> netResponseResponse = getFacePassCallback(facePassItemInfo).execute();
                             if (netResponseResponse.isSuccessful()) {
-                                Log.d(TAG,"addFacePassToLocal519 --start-- " + 579);
-                                Log.d(TAG,"limeaddFacePassToLocal --start-- " + 573);
+                                Log.d(TAG,"limeaddFacePassToLocal --start-- " + 581);
                                 BaseNetResponse<String> baseNetResponse = netResponseResponse.body();
                                 if (baseNetResponse != null && TextUtils.equals(baseNetResponse.getCode(), "10000")) {
                                     String uniqueNumber = facePassItemInfo.getUnique_number();
@@ -655,7 +655,7 @@ public class FacePassHelper extends ActivityWeakRefHolder {
                             Log.e(TAG,"limeFacePassHelper Throwable 634 " + e.getMessage());
                             Log.e(TAG,"lime-facePassHelper -handleFacePassInfo--cardNumber: " + cardNumber + " try catch error: " + e.getMessage());
                             //删除已经添加的人脸库，如果网络请求失败的话
-                            CBGFacePassHandlerHelper cbgFacePassHandHelper = ActivityHolderFactory.get(CBGFacePassHandlerHelper.class, activityWithCheck);
+                            CBGFacePassHandlerHelper cbgFacePassHandHelper = (CBGFacePassHandlerHelper) ActivityHolderFactory.get(CBGFacePassHandlerHelper.class, activityWithCheck);
                             if (cbgFacePassHandHelper != null && !TextUtils.isEmpty(localAddFaceToken)) {
                                 cbgFacePassHandHelper.deleteFace(localAddFaceToken.getBytes(StandardCharsets.ISO_8859_1));
                             }
@@ -791,7 +791,7 @@ public class FacePassHelper extends ActivityWeakRefHolder {
                         try {
                             FacePassPeopleInfoDao facePassPeopleInfoDao = daoSession.getFacePassPeopleInfoDao();
                             facePassPeopleInfoDao.deleteAll();
-                            CBGFacePassHandlerHelper cbgFacePassHandlerHelper = ActivityHolderFactory.get(CBGFacePassHandlerHelper.class, activityWithCheck);
+                            CBGFacePassHandlerHelper cbgFacePassHandlerHelper = (CBGFacePassHandlerHelper) ActivityHolderFactory.get(CBGFacePassHandlerHelper.class, activityWithCheck);
                             if (cbgFacePassHandlerHelper != null) {
                                 cbgFacePassHandlerHelper.deleteAllFace();
                             }
