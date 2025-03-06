@@ -30,10 +30,12 @@ import com.stkj.cashier.R
 import com.stkj.cashier.app.adapter.ConsumeRefundListAdapter
 import com.stkj.cashier.app.base.helper.CommonTipsHelper
 import com.stkj.cashier.app.base.helper.SystemEventHelper
+import com.stkj.cashier.app.main.callback.ConsumerController
 import com.stkj.cashier.app.main.callback.ConsumerListener
 import com.stkj.cashier.app.weigh.commontips.CommonTipsView
 import com.stkj.cashier.bean.MessageEventBean
 import com.stkj.cashier.bean.db.CompanyMemberdbEntity
+import com.stkj.cashier.cbgfacepass.model.FacePassPeopleInfo
 import com.stkj.cashier.config.MessageEventType
 import com.stkj.cashier.constants.Constants
 import com.stkj.cashier.greendao.biz.CompanyMemberBiz
@@ -60,7 +62,8 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import com.stkj.cashier.bean.ConsumeRefundListBean as ConsumeRefundListBean1
 
-class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClickListener {
+class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClickListener ,
+    ConsumerController {
 
     val TAG = "DifferentDisplay"
     private var companyMember: CompanyMemberdbEntity? = null
@@ -91,11 +94,11 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
 
     private lateinit var llPayError:LinearLayout
     private lateinit var tvPayError:TextView
-
+    private var isConsumerAuthTips = false
     private var layoutManager: LinearLayoutManager? = null
     private var mAdapter: ConsumeRefundListAdapter? = null
     private var fpcFace: FacePassCameraLayout? = null
-    private val consumerListener: ConsumerListener? = null
+    private var consumerListener: ConsumerListener? = null
 //    private lateinit var cameraPreview: CameraPreview
 //    private var ivCameraOverLayer:ImageView? = null
 //    private var ivSuccessHeader:ImageView? = null
@@ -129,6 +132,10 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
         setCancelable(false)
         setContentView(R.layout.layout_different_display_2)
             fpcFace = findViewById(R.id.fpc_face) as FacePassCameraLayout
+            consumerListener?.onCreateFacePreviewView(
+                fpcFace!!.facePreviewFace,
+                fpcFace!!.irPreviewFace
+            )
 //        ivCameraOverLayer = findViewById(R.id.iv_camera_over_layer);
 //        ivSuccessHeader = findViewById(R.id.ivSuccessHeader);
 //        cameraPreview = findViewById(R.id.cameraPreview)
@@ -295,11 +302,17 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
 
     override fun onDisplayRemoved() {
         super.onDisplayRemoved()
+        if (consumerListener != null) {
+            consumerListener!!.onConsumerDismiss()
+        }
         Log.d(TAG,"limescreen 277 副屏初始化onDisplayRemoved")
     }
 
     override fun onDisplayChanged() {
         super.onDisplayChanged()
+        if (consumerListener != null) {
+            consumerListener!!.onConsumerChanged()
+        }
         Log.d(TAG,"limescreen 277 副屏初始化onDisplayChanged")
     }
 
@@ -1026,6 +1039,14 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
         }
     }
 
+    fun setConsumerListener(consumerListener: ConsumerListener?) {
+        this.consumerListener = consumerListener
+    }
+
+    fun clearConsumerPresentation() {
+        this.consumerListener = null
+    }
+
     //系统事件监听
     private val systemEventListener: SystemEventHelper.OnSystemEventListener =
         object : SystemEventHelper.OnSystemEventListener {
@@ -1049,6 +1070,74 @@ class DifferentDisplay : Presentation, CameraManager.CameraListener, View.OnClic
                 refreshBatteryStatus(batteryPercent, isChanging)
             }
         }
+
+    override fun setFacePreview(preview: Boolean) {
+        if (fpcFace != null) {
+            fpcFace!!.setPreviewFace(preview)
+        }
+    }
+
+    override fun setConsumerTips(tips: String?) {
+        setConsumerTips(tips, 0)
+    }
+
+    override fun setConsumerTips(tips: String?, consumerPro: Int) {
+        if (fpcFace != null) {
+            fpcFace!!.setFaceCameraTips(tips)
+        }
+    }
+
+    override fun setConsumerAuthTips(tips: String?) {
+        if (fpcFace != null) {
+            fpcFace!!.setFaceCameraTips(tips)
+        }
+    }
+
+    override fun isConsumerAuthTips(): Boolean {
+        return isConsumerAuthTips
+    }
+
+    override fun setConsumerConfirmFaceInfo(
+        facePassPeopleInfo: FacePassPeopleInfo?,
+        needConfirm: Boolean,
+        consumerType: Int
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setConsumerConfirmCardInfo(cardNumber: String?, needConfirm: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setConsumerConfirmScanInfo(scanData: String?, needConfirm: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setConsumerTakeMealWay() {
+        TODO("Not yet implemented")
+    }
+
+    override fun resetFaceConsumerLayout() {
+        if (fpcFace != null) {
+            fpcFace!!.resetFaceInfoLayout()
+        }
+    }
+
+    override fun setNormalConsumeStatus() {
+        TODO("Not yet implemented")
+    }
+
+    override fun setPayConsumeStatus() {
+        TODO("Not yet implemented")
+    }
+
+    override fun setPayPrice(payPrice: String?, canCancelPay: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setCanCancelPay(showCancelPay: Boolean) {
+        TODO("Not yet implemented")
+    }
 
 }
 

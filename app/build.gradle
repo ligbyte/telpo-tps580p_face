@@ -293,6 +293,18 @@ dependencies {
     implementation "com.uber.autodispose2:autodispose-androidx-lifecycle:2.1.1"
     implementation "com.elvishew:xlog:1.11.0"
 
+    //camerax库
+    api "androidx.camera:camera-core:1.2.0"
+    api "androidx.camera:camera-camera2:1.2.0"
+    // If you want to additionally use the CameraX Lifecycle library
+    api "androidx.camera:camera-lifecycle:1.2.0"
+    // If you want to additionally use the CameraX VideoCapture library
+    api "androidx.camera:camera-video:1.2.0"
+    // If you want to additionally use the CameraX View class
+    api "androidx.camera:camera-view:1.2.0"
+    // If you want to additionally use the CameraX Extensions library
+    api "androidx.camera:camera-extensions:1.2.0"
+
 }
 
 if (rootProject.ext.tinkerEnabled) {

@@ -23,6 +23,7 @@ import android.util.Log
 import android.util.SparseArray
 import android.view.Display
 import android.view.KeyEvent
+import android.view.SurfaceView
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -40,6 +41,8 @@ import com.stkj.cashier.R
 import com.stkj.cashier.app.base.BaseActivity
 import com.stkj.cashier.app.base.helper.SystemEventHelper
 import com.stkj.cashier.app.base.helper.SystemEventHelper.OnSystemEventListener
+import com.stkj.cashier.app.main.callback.ConsumerListener
+import com.stkj.cashier.app.main.helper.CBGCameraHelper
 import com.stkj.cashier.app.setting.Consumption1SettingFragment
 import com.stkj.cashier.bean.CheckAppVersionBean
 import com.stkj.cashier.bean.CompanyMemberBean
@@ -110,11 +113,12 @@ import java.util.concurrent.TimeUnit
  * @author <a href="mailto:jenly1314@gmail.com">Jenly</a>
  */
 @AndroidEntryPoint
-class MainActivity : BaseActivity<MainViewModel, MainActivityBinding>(), View.OnClickListener,ScanCallBack {
+class MainActivity : BaseActivity<MainViewModel, MainActivityBinding>(), View.OnClickListener,ScanCallBack,ConsumerListener {
 
     
     val TAG = "MainActivity"
     var job: Job? = null
+    private var needRestartConsumer = false
     private var mPresentation: DifferentDisplay? = null
     private lateinit var reportDeviceStatusDisposable: Disposable
     private val fragments by lazy {
@@ -1329,6 +1333,8 @@ class MainActivity : BaseActivity<MainViewModel, MainActivityBinding>(), View.On
             }
         }
 
+        mPresentation?.setConsumerListener(this)
+
     }
 
 
@@ -1796,5 +1802,31 @@ class MainActivity : BaseActivity<MainViewModel, MainActivityBinding>(), View.On
                 refreshBatteryStatus(batteryPercent, isChanging)
             }
         }
+
+    override fun onCreateFacePreviewView(previewView: SurfaceView?, irPreview: SurfaceView?) {
+        var cbgCameraHelper: CBGCameraHelper? = getWeakRefHolder(CBGCameraHelper::class.java)
+        var isFaceDualCamera = DeviceManager.getInstance().isSupportDualCamera() &&
+                CBGFacePassConfigMMKV.isOpenDualCamera()
+        cbgCameraHelper?.setPreviewView(previewView, irPreview, isFaceDualCamera)
+        //异步初始化相机模块
+        Schedulers.io().scheduleDirect {
+            try {
+                cbgCameraHelper?.prepareFacePassDetect()
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+
+    override fun onConsumerDismiss() {
+        needRestartConsumer = true
+        mPresentation?.clearConsumerPresentation()
+        //清理相机相关引用,释放相机
+        var cbgCameraHelper: CBGCameraHelper? = getWeakRefHolder(CBGCameraHelper::class.java)
+        cbgCameraHelper?.releaseCameraHelper()
+        clearWeakRefHolder(CBGCameraHelper::class.java)
+    }
+
 
 }
